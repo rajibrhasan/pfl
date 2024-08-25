@@ -390,6 +390,7 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
 
     elif partition > "noniid-#label0" and partition <= "noniid-#label9":
         num = eval(partition[13:])
+        print("Num: ",num)
         if dataset in ('celeba', 'covtype', 'a9a', 'rcv1', 'SUSY'):
             num = 1
             K = 2
@@ -402,6 +403,7 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
             
         print(f'K: {K}')
         if num == 10:
+            print('Num: 10 Here ')
             net_dataidx_map ={i:np.ndarray(0,dtype=np.int64) for i in range(n_parties)}
             for i in range(10):
                 idx_k = np.where(y_train==i)[0]
