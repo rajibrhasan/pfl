@@ -552,7 +552,7 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
     print('Data statistics Train:\n %s \n' % str(traindata_cls_counts))
     
     if local_view:
-        net_dataidx_map_test = {i: [] for i in range(n_parties)}
+        net_dataidx_map_test = {i: [] for i in range(n_parties+1)}
         for k_id, stat in traindata_cls_counts.items():
             labels = list(stat.keys())
             for l in labels:
