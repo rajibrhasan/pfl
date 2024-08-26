@@ -402,11 +402,22 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
             K = 10
             
         print(f'K: {K}')
+
+        samples_per_cls = int(0.01*n_train/K)  # Modify as needed
+        # Create the IID auxiliary dataset with equal number of samples per class
+        aux_idxs = []
+        for i in range(K):
+            class_idxs = torch.where(y_train == i)[0]
+            selected_idxs = np.random.choice(class_idxs, samples_per_cls, replace=False)
+            aux_idxs.extend(selected_idxs)
+        aux_idxs = np.array(aux_idxs)
+
         if num == 10:
             print('Num: 10 Here ')
             net_dataidx_map ={i:np.ndarray(0,dtype=np.int64) for i in range(n_parties)}
             for i in range(10):
                 idx_k = np.where(y_train==i)[0]
+                idx_k = idx_k[~np.isin(idx_k, aux_idxs)]
                 np.random.shuffle(idx_k)
                 split = np.array_split(idx_k,n_parties)
                 for j in range(n_parties):
@@ -428,6 +439,7 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
             net_dataidx_map ={i:np.ndarray(0,dtype=np.int64) for i in range(n_parties)}
             for i in range(K):
                 idx_k = np.where(y_train==i)[0]
+                idx_k = idx_k[~np.isin(idx_k, aux_idxs)]
                 np.random.shuffle(idx_k)
                 split = np.array_split(idx_k,times[i])
                 ids=0
@@ -435,6 +447,7 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
                     if i in contain[j]:
                         net_dataidx_map[j]=np.append(net_dataidx_map[j],split[ids])
                         ids+=1
+            net_dataidx_map[n_parties] = aux_idxs
     elif partition > "noniid1-#label0" and partition <= "noniid1-#label9":
         print('Modified Non-IID partitioning')
         num = eval(partition[14:])
