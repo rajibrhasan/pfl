@@ -407,7 +407,7 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
         # Create the IID auxiliary dataset with equal number of samples per class
         aux_idxs = []
         for i in range(K):
-            class_idxs = torch.where(y_train == i)[0]
+            class_idxs = np.where(y_train == i)[0]
             selected_idxs = np.random.choice(class_idxs, samples_per_cls, replace=False)
             aux_idxs.extend(selected_idxs)
         aux_idxs = np.array(aux_idxs)
