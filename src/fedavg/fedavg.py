@@ -8,7 +8,7 @@ def FedAvg(w, weight_avg=None):
     :param w: list of client model parameters
     :return: updated server model parameters
     """
-    if weight_avg == None:
+    if weight_avg is None:
         weight_avg = [1/len(w) for i in range(len(w))]
         
     w_avg = copy.deepcopy(w[0])
