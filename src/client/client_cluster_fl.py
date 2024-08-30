@@ -28,6 +28,8 @@ class Client_ClusterFL(object):
         self.net.train()
         
         optimizer = torch.optim.SGD(self.net.parameters(), lr=self.lr, momentum=self.momentum, weight_decay=0)
+
+        self.count += 1
         
         epoch_loss = []
         for iteration in range(self.local_ep):
