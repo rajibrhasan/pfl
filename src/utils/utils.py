@@ -773,13 +773,13 @@ def get_dataloader(dataset, datadir, train_bs, test_bs, dataidxs=None, noise_lev
                 #transforms.RandomCrop(32),
                 #transforms.RandomHorizontalFlip(),
                 #transforms.ToTensor(),
-                AddGaussianNoise(0., noise_level, net_id, total), 
+                # AddGaussianNoise(0., noise_level, net_id, total), 
                 transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
             ])
             # data prep for test set
             transform_test = transforms.Compose([
                 transforms.ToTensor(),
-                AddGaussianNoise(0., noise_level, net_id, total), 
+                # AddGaussianNoise(0., noise_level, net_id, total), 
                 transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
             ])
 
