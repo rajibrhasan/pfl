@@ -649,6 +649,8 @@ class AddGaussianNoise(object):
             size = int(28 / self.num)
             row = int(self.net_id / size)
             col = self.net_id % size
+            print(tensor.shape)
+            print(size, row, col)
             for i in range(size):
                 for j in range(size):
                     filt[:,row*size+i,col*size+j] = 1
