@@ -340,7 +340,27 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
 
     n_train = y_train.shape[0]
 
+    
+
     if partition == "homo":
+        if dataset in ('celeba', 'covtype', 'a9a', 'rcv1', 'SUSY'):
+            num = 1
+            K = 2
+        elif dataset == 'cifar100':
+            K = 100
+        elif dataset == 'tinyimagenet':
+            K = 200
+        else:
+            K = 10
+
+        samples_per_cls = int(0.01*n_train/K)  # Modify as needed
+        # Create the IID auxiliary dataset with equal number of samples per class
+        aux_idxs = []
+        for i in range(K):
+            class_idxs = np.where(y_train == i)[0]
+            selected_idxs = np.random.choice(class_idxs, samples_per_cls, replace=False)
+            aux_idxs.extend(selected_idxs)
+        aux_idxs = np.array(aux_idxs)
         idxs = np.random.permutation(n_train)
         idxs = idxs[~np.isin(idxs, aux_idxs)]
         batch_idxs = np.array_split(idxs, n_parties)
@@ -403,15 +423,6 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
             K = 10
             
         print(f'K: {K}')
-
-        samples_per_cls = int(0.01*n_train/K)  # Modify as needed
-        # Create the IID auxiliary dataset with equal number of samples per class
-        aux_idxs = []
-        for i in range(K):
-            class_idxs = np.where(y_train == i)[0]
-            selected_idxs = np.random.choice(class_idxs, samples_per_cls, replace=False)
-            aux_idxs.extend(selected_idxs)
-        aux_idxs = np.array(aux_idxs)
 
         if num == 10:
             print('Num: 10 Here ')
