@@ -342,6 +342,7 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
 
     if partition == "homo":
         idxs = np.random.permutation(n_train)
+        idxs = idxs[~np.isin(idxs, aux_idxs)]
         batch_idxs = np.array_split(idxs, n_parties)
         net_dataidx_map = {i: batch_idxs[i] for i in range(n_parties)}
 
