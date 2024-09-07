@@ -424,6 +424,15 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
             
         print(f'K: {K}')
 
+        samples_per_cls = int(0.01*n_train/K)  # Modify as needed
+        # Create the IID auxiliary dataset with equal number of samples per class
+        aux_idxs = []
+        for i in range(K):
+            class_idxs = torch.where(y_train == i)[0]
+            selected_idxs = np.random.choice(class_idxs, samples_per_cls, replace=False)
+            aux_idxs.extend(selected_idxs)
+        aux_idxs = np.array(aux_idxs)
+
         if num == 10:
             print('Num: 10 Here ')
             net_dataidx_map ={i:np.ndarray(0,dtype=np.int64) for i in range(n_parties)}
