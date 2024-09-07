@@ -411,7 +411,7 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
 
     elif partition > "noniid-#label0" and partition <= "noniid-#label9":
         num = eval(partition[13:])
-        print("Num: ",num)
+        print("Num: ",num)git 
         if dataset in ('celeba', 'covtype', 'a9a', 'rcv1', 'SUSY'):
             num = 1
             K = 2
@@ -428,7 +428,7 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
         # Create the IID auxiliary dataset with equal number of samples per class
         aux_idxs = []
         for i in range(K):
-            class_idxs = torch.where(y_train == i)[0]
+            class_idxs = np.where(y_train == i)[0]
             selected_idxs = np.random.choice(class_idxs, samples_per_cls, replace=False)
             aux_idxs.extend(selected_idxs)
         aux_idxs = np.array(aux_idxs)
