@@ -411,7 +411,7 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
 
     elif partition > "noniid-#label0" and partition <= "noniid-#label9":
         num = eval(partition[13:])
-        print("Num: ",num)git 
+        print("Num: ",num)
         if dataset in ('celeba', 'covtype', 'a9a', 'rcv1', 'SUSY'):
             num = 1
             K = 2
@@ -421,7 +421,6 @@ def partition_data(dataset, datadir, logdir, partition, n_parties, beta=0.4, loc
             K = 200
         else:
             K = 10
-            
         print(f'K: {K}')
 
         samples_per_cls = int(0.01*n_train/K)  # Modify as needed
